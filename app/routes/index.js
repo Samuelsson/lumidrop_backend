@@ -1,8 +1,9 @@
 const express = require('express');
+const userRoutes = require('./users/users.route');
 
 const router = express.Router();
 
-require('./users')(router);
+router.use('/users', userRoutes);
 
 // Fallback for non declared routes
 router.get('*', (req, res) => {
