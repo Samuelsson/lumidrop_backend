@@ -9,7 +9,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./"
+    "start": "nodemon --exec babel-node ./server.js"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -21,6 +21,8 @@
     "mongoose-unique-validator": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "nodemon": "^1.15.0"
   }
 }
