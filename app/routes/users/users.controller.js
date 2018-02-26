@@ -1,16 +1,6 @@
 const User = require('./users.model');
 
-// Could this be put in mongoose methods or similar?
-function stripPasswordFromUser(user) {
-    if (user && user.password) {
-        const userWithNoPassword = user;
-        userWithNoPassword.password = undefined;
-        return userWithNoPassword;
-    }
-    return user;
-}
-
-exports.register = (req, res, next) => {
+exports.register = (req, res) => {
     const user = new User({
         email: req.body.email,
         username: req.body.username,
@@ -19,19 +9,11 @@ exports.register = (req, res, next) => {
 
     user.save()
         .then((savedUser) => {
-            const returnedUser = stripPasswordFromUser(savedUser);
-            return res.json(returnedUser);
+            return res.json(savedUser);
         })
-        .catch(e => next(e));
-        // .catch((e) => {
-        //     return res.status(400).send({
-        //         message: 'fel lixom'
-        //     });
-        // });
-};
-
-exports.listAllUsers = (req, res, next) => {
-    User.find()
-        .then(users => res.json(users))
-        .catch(e => next(e));
+        .catch((err) => {
+            return res.status(400).send({
+                message: err
+            });
+        });
 };
