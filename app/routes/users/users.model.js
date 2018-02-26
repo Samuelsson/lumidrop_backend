@@ -1,14 +1,13 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-const bcrypt = require('bcrypt');
-
-const saltRounds = 12;
+import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
+import bcrypt from 'bcrypt';
 
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
         required: true,
+        lowercase: true,
         trim: true
     },
     username: {
@@ -35,18 +34,24 @@ const UserSchema = new mongoose.Schema({
 UserSchema.plugin(uniqueValidator);
 
 UserSchema.pre('save', function (next) {
+    this.hashPassword(next);
+});
+
+UserSchema.methods.hashPassword = function (next) {
     const user = this;
-    bcrypt.hash(user.password, saltRounds, function (err, hash) {
+    const saltRounds = 12;
+
+    bcrypt.hash(user.password, saltRounds, (err, hash) => {
         if (err) {
             return next(err);
         }
         user.password = hash;
-        next();
+        return next();
     });
-});
+};
 
 UserSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.password);
+    return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model('User', UserSchema);
