@@ -1,14 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import mongoose from 'mongoose';
 
-const dbConfig = require('./app/config/database');
-const routes = require('./app/routes');
+import config from './app/config';
+import routes from './app/routes';
 
 // Initialize our app variable and declaring port nbr
 const app = express();
-const port = 3000;
 
 // Middleware
 app.use(cors());
@@ -16,10 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Connecting to the database
-mongoose.connect(dbConfig.url).then(() => {
-    console.log(`Successfully Connected to the Mongodb Database at URL: ${dbConfig.url}`);
+mongoose.connect(config.database.url).then(() => {
+    console.log(`Successfully Connected to the Mongodb Database at URL: ${config.database.url}`);
 }).catch(() => {
-    console.log(`Error Connecting to the Mongodb Database at URL: ${dbConfig.url}. Exiting...`);
+    console.log(`Error Connecting to the Mongodb Database at URL: ${config.database.url}. Exiting...`);
     process.exit();
 });
 
@@ -27,6 +26,6 @@ mongoose.connect(dbConfig.url).then(() => {
 app.use('/', routes);
 
 // Listen to port 3000
-app.listen(port, () => {
-    console.log(`Running Express server at port ${port}`);
+app.listen(config.server.port, () => {
+    console.log(`Running Express server at port ${config.server.port}`);
 });

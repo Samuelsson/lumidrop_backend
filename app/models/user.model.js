@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -38,10 +37,6 @@ UserSchema.pre('save', function (next) {
     this.hashPassword(next);
 });
 
-UserSchema.post('save', function () {
-    this.stripPasswordFromUser();
-});
-
 UserSchema.methods.hashPassword = function (next) {
     const user = this;
     const saltRounds = 12;
@@ -55,17 +50,10 @@ UserSchema.methods.hashPassword = function (next) {
     });
 };
 
-UserSchema.methods.stripPasswordFromUser = function () {
-    const user = this;
-
-    if (user && user.password) {
-        user.password = undefined;
-    }
-};
-
 UserSchema.methods.validPassword = function (password) {
     return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model('User', UserSchema);
-module.exports = User;
+
+export default User;
