@@ -12,7 +12,8 @@ userController.register = (req, res) => {
     const user = new User({
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        contactInformation: req.body.contactInformation
     });
 
     user.save()

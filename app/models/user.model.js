@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
 import bcrypt from 'bcrypt';
 
 const UserSchema = new mongoose.Schema({
@@ -25,13 +24,8 @@ const UserSchema = new mongoose.Schema({
         lastName: { type: String }
     }
 }, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at'
-    }
+    timestamps: true
 });
-
-UserSchema.plugin(uniqueValidator);
 
 UserSchema.pre('save', function (next) {
     this.hashPassword(next);
