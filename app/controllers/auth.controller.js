@@ -8,13 +8,15 @@ authController.login = (req, res) => {
         if (err) return res.status(500).json({ message: 'We fucked up!' });
         if (!user) return res.status(401).json({ message: 'User not found.' });
 
-        if (!user.validPassword(req.body.password)) {
-            return res.status(401).json({ message: 'Wrong password.' });
-        }
+        user.validPassword(req.body.password)
+            .then((valid) => {
+                if (!valid) return res.status(401).json({ message: 'Wrong password.' });
 
-        return res.json({
-            token: jwt.sign({ username: user.username, id: user.id }, 'THIS_IS_GOING_IN_ENV_CONF_LATER')
-        });
+                return res.json({
+                    token: jwt.sign({ username: user.username, id: user.id }, 'THIS_IS_GOING_IN_ENV_CONF_LATER')
+                });
+            })
+            .catch(error => res.status(400).send({ message: error }));
     });
 };
 
