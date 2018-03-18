@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import User from '../models/user.model';
+import User from './user.model';
 
 const userController = {};
 
