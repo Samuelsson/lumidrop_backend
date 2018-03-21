@@ -1,4 +1,3 @@
-import httpStatus from 'http-status';
 import User from './user.model';
 
 const userController = {};
@@ -18,7 +17,7 @@ userController.register = (req, res) => {
 
     user.save()
         .then(savedUser => res.json(sanitizeReturnedUser(savedUser)))
-        .catch(err => res.status(httpStatus.BAD_REQUEST).send({ message: err }));
+        .catch(err => res.status(500).send({ message: err }));
 };
 
 export default userController;

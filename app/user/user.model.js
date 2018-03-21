@@ -36,9 +36,8 @@ UserSchema.methods.hashPassword = function (next) {
     const saltRounds = 12;
 
     bcrypt.hash(user.password, saltRounds, (err, hash) => {
-        if (err) {
-            return next(err);
-        }
+        if (err) return next(err);
+
         user.password = hash;
         return next();
     });

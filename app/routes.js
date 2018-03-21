@@ -1,5 +1,4 @@
 import express from 'express';
-import httpStatus from 'http-status';
 import authRoutes from './auth/auth.route';
 import userRoutes from './user/user.route';
 
@@ -9,7 +8,7 @@ router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 
 function unknownRouteReturn(res) {
-    res.status(httpStatus.BAD_REQUEST).json({ message: 'Unknown route' });
+    res.status(400).json({ message: 'Unknown route' });
 }
 
 // Fallback for non declared routes
