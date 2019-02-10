@@ -1,3 +1,3 @@
 # Lumidrop Backend
 
-Simple backend using Express.
+Simple backend using Express and MongoDB.
